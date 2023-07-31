@@ -22,15 +22,17 @@
  */
 
 function main() {
-    let req = image.requestScreenCapture(10000,0);
-    if (!req) {
-        req = image.requestScreenCapture(10000,0);
+    if (init()) {
+        log('初始化成功')
+        // let  tmpImage = image.captureScreen(3,1040,26,1156,58)
+        // let tmpImage = image.captureFullScreen();
+        // orz 参数代表是旋转角度，0 代表不旋转 90 代表向左旋转90度，还有180，270，360参数
+        dungeon.start();
+        // getBaseInfo()
+        //释放所有资源
+        // mainTask_Start();
     }
-    if (!req) {
-        toast("申请权限失败");
-        return;
-    }
-    mainTask_Start();
+
 }
 
 main()

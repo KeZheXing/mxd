@@ -140,6 +140,8 @@ ImageWrapper.prototype.releaseScreenCapture = function () {
  * @return AutoImage AutoImage对象或者null
  */
 ImageWrapper.prototype.captureScreen = function (retryNumber, x, y, ex, ey) {
+    log('截图')
+    log(x+","+y+","+ex+","+ey)
     if (imageWrapper == null) {
         return null;
     }
@@ -1256,7 +1258,8 @@ ImageWrapper.prototype.screencapBitmap = function (root) {
 
 
 function OCRWrapper() {
-
+    let result = ocr.ocrImage(image.captureFullScreen(), 20000, {"orz": 0});
+    log(JSON.stringify(result))
 }
 
 var ocr = new OCRWrapper();

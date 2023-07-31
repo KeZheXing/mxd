@@ -26,27 +26,43 @@ function isAUTO() {
             for (var y=centerPointY-R;y<centerPointY+R;y++){
                 var absX = Math.abs(centerPointX-x)
                 var absY = Math.abs(centerPointY-y)
-                if (R-Math.sqrt(absX*absX+absY*absY)<1) {
-                    let firstColor = "#AE9759,#C7AB5C,#CEAF5E,#D9B961,#E0C16A,#C8AC5C,#D1B35E,#DBBA5E,#E7C260,#EACB75,#D5B660,#DDBD61,#EDCE70,#F0D074,#F1D581,#E7C86B,#F2D77C,#F4DD81,#F4DB8B,#F6E09C,#EACC70,#F5DD82,#F9E6A3,#F9E9C7,#FCEDCB,#F5D581,#FAE187,#FCEC9D,#FFF6D3,#F9DC8C,#F8DF98,#FAE7AE,#F9E5A4,#F8E3A9"; let points = image.findColor(tmpImage, firstColor, 0.9, x, y, x, y, 1, 2);
+                if (R-Math.sqrt(absX*absX+absY*absY)<0.5) {
+                    let firstColor = "#AE9759,#C7AB5C,#CEAF5E,#D9B961,#E0C16A,#C8AC5C,#D1B35E,#DBBA5E,#E7C260,#EACB75,#D5B660,#DDBD61,#EDCE70,#F0D074,#F1D581,#E7C86B,#F2D77C,#F4DD81,#F4DB8B,#F6E09C,#EACC70,#F5DD82,#F9E6A3,#F9E9C7,#FCEDCB,#F5D581,#FAE187,#FCEC9D,#FFF6D3,#F9DC8C,#F8DF98,#FAE7AE,#F9E5A4,#F8E3A9";
+                    let points = image.findColor(tmpImage, firstColor, 0.9, x, y, x, y, 1, 2);
                     if (points) {
                         count++
                     }
-                    if (count>200) {
+                    if (count>300) {
                         var closeTask = readResAutoImage("主线_任务关闭.png");
-                        log(closeTask)
+                        log("主线_任务关闭"+closeTask)
+                        image.setFindColorImageMode(1)
                         let closeTaskPoints = image.findImageByColor(tmpImage, closeTask, 0, 0, 0, 0, 0.8, 10);
-                        image.recycle(closeTask)
-                        log(closeTaskPoints)
-                        if (closeTaskPoints) {
+                        log("主线_任务关闭 回收")
+
+                        log("主线_任务关闭 回收成功")
+                        if (closeTaskPoints!=null && closeTaskPoints !=undefined) {
+                            image.recycle(closeTask)
                             log("自动中_主线_关闭任务")
                             result =  false
                             break;
                         }
+                        image.recycle(closeTask)
+                        log("主线_任务关闭 回收成功2")
+                        log(MIAN_TASK_YD)
                         if (MIAN_TASK_YD) {
-                            let smallTmplate = readResAutoImage("主线_立刻移动.png");
-                            let points = image.findImage(tmpImage, smallTmplate, 650, 185, 711, 221, 0.7, 0.8, 10, 5);
-                            image.recycle(smallTmplate)
-                            if (points) {
+                            log("主线_立刻移动")
+                            let likeyidong = readResAutoImage("主线_立刻移动.png");
+                            log("主线_立刻移动2")
+                            let likeyidongPoints2 = null;
+                            try{
+                                likeyidongPoints2 = image.findImageByColor(tmpImage, likeyidong, 650, 185, 711, 221, 0.8, 10);
+                            }catch (e){
+                                log(e)
+                            }
+                            log("主线_立刻移动3")
+                            image.recycle(likeyidong)
+                            log("主线_立刻移动4")
+                            if (likeyidongPoints2) {
                                 log("自动中_自动任务 立刻移动...");
                                 clickPoint(761,204)
                                 currentImgTime = undefined
@@ -54,14 +70,17 @@ function isAUTO() {
                             }
                         }
                         result =  true
+                        log("跳过1")
                         break;
                     }
                     if (result) {
+                        log("跳过2")
                         break;
                     }
                 }
             }
             if (result) {
+                log("跳过3")
                 break;
             }
         }
@@ -94,9 +113,7 @@ function handle() {
                 clickPoint(points[0].x, points[0].y)
                 currentImgTime = undefined
                 sleep(1000);
-                if (list[i]!="主线_当前任务.png") {
-                    handle()
-                }
+                break;
             }
         }
         sleep(1000);
